@@ -1,9 +1,6 @@
 package part4;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
@@ -63,5 +60,39 @@ public class Main {
         3. Đêm số lần xuất hiện của giá trị 10 trong danh sách
         4. Kiểm tra tồn tại của giá trị 50 trong danh sách
         */
+
+        List<Integer> randomListBt = Stream.generate(() -> random.nextInt(100))
+                .limit(0)
+                .toList();
+
+        randomListBt.stream().filter(Main::isPrime)
+                .forEach(System.out::println);
+
+        Integer total = randomListBt.stream().filter(num->num%3==0)
+                .reduce(0, Integer::sum);
+
+        long count = randomListBt.stream().filter(num -> num == 10)
+                .count();
+
+        boolean isExist = randomListBt.stream().anyMatch(num->num == 50);
+
+        Optional<Integer> op = randomListBt.stream().max((o1, o2) -> o1-o2);
+        if(op.isPresent()){
+            // nếu có giá tri
+            op.get();
+        }
+
+        Integer valueMax = op.orElse(0);
+        System.out.println(valueMax);
+        Integer valueMax1 = op.orElseThrow(() -> new RuntimeException("ko có giá trị lớn nhất"));
+    }
+    public static boolean isPrime(int n){
+        if (n<2) return false;
+        for (int i = 2; i <= Math.sqrt(n) ; i++) {
+            if (n %i==0){
+                return false;
+            }
+        }
+        return true;
     }
 }
